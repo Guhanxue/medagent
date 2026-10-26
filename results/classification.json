@@ -1,0 +1,982 @@
+{
+  "reported_draw": [
+    {
+      "task": "aptos2ddr_resnet18",
+      "shift": "mixed",
+      "source": 0.827,
+      "delivered": 0.8304,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "aptos2eyepacs_resnet18",
+      "shift": "mixed",
+      "source": 0.7163,
+      "delivered": 0.7042,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "aptos2messidor2_resnet18",
+      "shift": "mixed",
+      "source": 0.7297,
+      "delivered": 0.6227,
+      "action": "finetune_partial",
+      "decision": "ship"
+    },
+    {
+      "task": "breakhis_40to400_resnet18",
+      "shift": "resolution",
+      "source": 0.8011,
+      "delivered": 0.8661,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "camelyon17_resnet18",
+      "shift": "intensity",
+      "source": 0.9312,
+      "delivered": 0.9312,
+      "action": "source",
+      "decision": "keep_source"
+    },
+    {
+      "task": "camelyon17_swin_tiny",
+      "shift": "intensity",
+      "source": 0.9811,
+      "delivered": 0.9969,
+      "action": "histogram_match_src",
+      "decision": "ship"
+    },
+    {
+      "task": "camelyon17_vit_small",
+      "shift": "intensity",
+      "source": 0.7033,
+      "delivered": 0.911,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "crc_nct2chaoyang_resnet18",
+      "shift": "mixed",
+      "source": 0.7273,
+      "delivered": 0.8721,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "eyepacs2aptos_resnet18",
+      "shift": "mixed",
+      "source": 0.9631,
+      "delivered": 0.9668,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "ham2isic_resnet18",
+      "shift": "contrast",
+      "source": 0.7669,
+      "delivered": 0.7669,
+      "action": "source",
+      "decision": "keep_source"
+    },
+    {
+      "task": "ham2padufes_resnet18",
+      "shift": "modality",
+      "source": 0.608,
+      "delivered": 0.6431,
+      "action": "finetune_lora",
+      "decision": "ship"
+    },
+    {
+      "task": "nih2chexpert_resnet18",
+      "shift": "contrast",
+      "source": 0.7877,
+      "delivered": 0.7863,
+      "action": "finetune_head",
+      "decision": "ship"
+    },
+    {
+      "task": "pathmnist_resnet18",
+      "shift": "contrast",
+      "source": 0.9878,
+      "delivered": 0.9878,
+      "action": "source",
+      "decision": "keep_source"
+    }
+  ],
+  "baselines": {
+    "source": {
+      "n": 13,
+      "mean": 0.8100384615384615,
+      "mean_delta": 0.0,
+      "improved": 0,
+      "tied": 13,
+      "harmed": 0,
+      "worst_delta": 0.0
+    },
+    "naive_head": {
+      "n": 13,
+      "mean": 0.8461307692307692,
+      "mean_delta": 0.03609230769230769,
+      "improved": 7,
+      "tied": 0,
+      "harmed": 6,
+      "worst_delta": -0.06690000000000007
+    },
+    "naive_partial": {
+      "n": 13,
+      "mean": 0.7119230769230769,
+      "mean_delta": -0.09811538461538462,
+      "improved": 3,
+      "tied": 0,
+      "harmed": 10,
+      "worst_delta": -0.51
+    },
+    "v2_safe": {
+      "n": 13,
+      "mean": 0.8373461538461539,
+      "mean_delta": 0.027307692307692324,
+      "improved": 7,
+      "tied": 3,
+      "harmed": 3,
+      "worst_delta": -0.10699999999999998
+    },
+    "v2_aggressive": {
+      "n": 13,
+      "mean": 0.8405615384615385,
+      "mean_delta": 0.030523076923076917,
+      "improved": 7,
+      "tied": 3,
+      "harmed": 3,
+      "worst_delta": -0.10670000000000002
+    },
+    "oracle": {
+      "n": 13,
+      "mean": 0.8712384615384615,
+      "mean_delta": 0.0612,
+      "improved": 13,
+      "tied": 0,
+      "harmed": 0,
+      "worst_delta": 0.0017000000000000348
+    },
+    "harness_K0": {
+      "n": 13,
+      "mean": 0.8086692307692308,
+      "mean_delta": -0.0013692307692307808,
+      "improved": 2,
+      "tied": 7,
+      "harmed": 4,
+      "worst_delta": -0.0817
+    },
+    "bn_reset": {
+      "n": 11,
+      "mean": 0.7867181818181818,
+      "mean_delta": -0.015290909090909103,
+      "improved": 4,
+      "tied": 1,
+      "harmed": 6,
+      "worst_delta": -0.12360000000000004
+    },
+    "tta_subset_source": {
+      "n": 11,
+      "mean": 0.8020090909090909,
+      "mean_delta": 0.0,
+      "improved": 0,
+      "tied": 11,
+      "harmed": 0,
+      "worst_delta": 0.0
+    },
+    "tent": {
+      "n": 11,
+      "mean": 0.7792090909090909,
+      "mean_delta": -0.02280000000000001,
+      "improved": 3,
+      "tied": 1,
+      "harmed": 7,
+      "worst_delta": -0.15390000000000004
+    },
+    "scripted_ladder": {
+      "n": 13,
+      "mean": 0.8197153846153846,
+      "mean_delta": 0.00967692307692307,
+      "improved": 6,
+      "tied": 1,
+      "harmed": 6,
+      "worst_delta": -0.18290000000000006
+    }
+  },
+  "four_draw_selection": {
+    "audit_score_winner": {
+      "draws": 4,
+      "mean": 0.8274384615384616,
+      "population_sd": 0.014742997535486515,
+      "harmed_total": 13,
+      "decisions_total": 52,
+      "harmed_per_draw": [
+        3,
+        3,
+        2,
+        5
+      ],
+      "worst_delta": -0.34330000000000005
+    },
+    "medadaptagent": {
+      "draws": 4,
+      "mean": 0.8387846153846155,
+      "population_sd": 0.00590248919509597,
+      "harmed_total": 9,
+      "decisions_total": 52,
+      "harmed_per_draw": [
+        2,
+        2,
+        2,
+        3
+      ],
+      "worst_delta": -0.18389999999999995
+    },
+    "variation": {
+      "tasks_changed": 12,
+      "tasks_total": 13,
+      "tasks": {
+        "aptos2ddr_resnet18": {
+          "released_methods": [
+            "bn_reset",
+            "finetune_head",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.015999999999999903,
+          "max_delta": 0.010500000000000065
+        },
+        "aptos2eyepacs_resnet18": {
+          "released_methods": [
+            "bn_reset",
+            "finetune_lora",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.03550000000000009,
+          "max_delta": 0.007000000000000006
+        },
+        "aptos2messidor2_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.00880000000000003,
+          "max_delta": 0.009399999999999964
+        },
+        "breakhis_40to400_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "finetune_partial",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.0013000000000000789,
+          "max_delta": 0.08189999999999997
+        },
+        "camelyon17_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "probe_head",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.0,
+          "max_delta": 0.04269999999999996
+        },
+        "camelyon17_swin_tiny": {
+          "released_methods": [
+            "histogram_match_src",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.0,
+          "max_delta": 0.015800000000000036
+        },
+        "camelyon17_vit_small": {
+          "released_methods": [
+            "finetune_head",
+            "finetune_partial",
+            "histogram_match_src",
+            "match_intensity_stats"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.1352,
+          "max_delta": 0.2559
+        },
+        "crc_nct2chaoyang_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "finetune_partial",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.0,
+          "max_delta": 0.2038000000000001
+        },
+        "eyepacs2aptos_resnet18": {
+          "released_methods": [
+            "source"
+          ],
+          "changed_across_draws": false,
+          "min_delta": 0.0,
+          "max_delta": 0.0
+        },
+        "ham2isic_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "probe_head",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.03180000000000005,
+          "max_delta": 0.057499999999999996
+        },
+        "ham2padufes_resnet18": {
+          "released_methods": [
+            "finetune_head",
+            "finetune_lora",
+            "finetune_partial",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.0,
+          "max_delta": 0.18690000000000007
+        },
+        "nih2chexpert_resnet18": {
+          "released_methods": [
+            "finetune_lora",
+            "finetune_partial",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": -0.18389999999999995,
+          "max_delta": 0.0
+        },
+        "pathmnist_resnet18": {
+          "released_methods": [
+            "finetune_lora",
+            "source"
+          ],
+          "changed_across_draws": true,
+          "min_delta": 0.0,
+          "max_delta": 0.0043999999999999595
+        }
+      }
+    },
+    "per_draw": [
+      {
+        "audit_score_winner": {
+          "n": 13,
+          "mean": 0.8348692307692308,
+          "mean_delta": 0.024830769230769236,
+          "improved": 5,
+          "tied": 5,
+          "harmed": 3,
+          "worst_delta": -0.17079999999999995
+        },
+        "medadaptagent": {
+          "n": 13,
+          "mean": 0.8415153846153847,
+          "mean_delta": 0.03147692307692308,
+          "improved": 5,
+          "tied": 6,
+          "harmed": 2,
+          "worst_delta": -0.17079999999999995
+        },
+        "choices": [
+          {
+            "task": "aptos2ddr_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.827,
+            "released": "bn_reset",
+            "source": 0.827,
+            "shipped": 0.8158,
+            "delta": -0.011199999999999988
+          },
+          {
+            "task": "aptos2eyepacs_resnet18",
+            "audit_winner": "source",
+            "audit_score": 0.5833,
+            "audit_winner_full": 0.7163,
+            "released": "bn_reset",
+            "source": 0.7163,
+            "shipped": 0.7233,
+            "delta": 0.007000000000000006
+          },
+          {
+            "task": "aptos2messidor2_resnet18",
+            "audit_winner": "bn_reset",
+            "audit_score": 0.7778,
+            "audit_winner_full": 0.7092,
+            "released": "source",
+            "source": 0.7297,
+            "shipped": 0.7297,
+            "delta": 0.0
+          },
+          {
+            "task": "breakhis_40to400_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.883,
+            "released": "finetune_head",
+            "source": 0.8011,
+            "shipped": 0.883,
+            "delta": 0.08189999999999997
+          },
+          {
+            "task": "camelyon17_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9312,
+            "released": "source",
+            "source": 0.9312,
+            "shipped": 0.9312,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_swin_tiny",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9811,
+            "released": "source",
+            "source": 0.9811,
+            "shipped": 0.9811,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_vit_small",
+            "audit_winner": "histogram_match_src",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8385,
+            "released": "histogram_match_src",
+            "source": 0.7033,
+            "shipped": 0.8385,
+            "delta": 0.1352
+          },
+          {
+            "task": "crc_nct2chaoyang_resnet18",
+            "audit_winner": "finetune_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9311,
+            "released": "finetune_partial",
+            "source": 0.7273,
+            "shipped": 0.9311,
+            "delta": 0.2038000000000001
+          },
+          {
+            "task": "eyepacs2aptos_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9659,
+            "released": "source",
+            "source": 0.9631,
+            "shipped": 0.9631,
+            "delta": 0.0
+          },
+          {
+            "task": "ham2isic_resnet18",
+            "audit_winner": "bn_reset",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.694,
+            "released": "source",
+            "source": 0.7669,
+            "shipped": 0.7669,
+            "delta": 0.0
+          },
+          {
+            "task": "ham2padufes_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.7713,
+            "released": "finetune_head",
+            "source": 0.608,
+            "shipped": 0.7713,
+            "delta": 0.1633
+          },
+          {
+            "task": "nih2chexpert_resnet18",
+            "audit_winner": "finetune_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.6169,
+            "released": "finetune_partial",
+            "source": 0.7877,
+            "shipped": 0.6169,
+            "delta": -0.17079999999999995
+          },
+          {
+            "task": "pathmnist_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9878,
+            "released": "source",
+            "source": 0.9878,
+            "shipped": 0.9878,
+            "delta": 0.0
+          }
+        ]
+      },
+      {
+        "audit_score_winner": {
+          "n": 13,
+          "mean": 0.8261,
+          "mean_delta": 0.01606153846153846,
+          "improved": 6,
+          "tied": 4,
+          "harmed": 3,
+          "worst_delta": -0.18389999999999995
+        },
+        "medadaptagent": {
+          "n": 13,
+          "mean": 0.8285923076923077,
+          "mean_delta": 0.01855384615384616,
+          "improved": 5,
+          "tied": 6,
+          "harmed": 2,
+          "worst_delta": -0.18389999999999995
+        },
+        "choices": [
+          {
+            "task": "aptos2ddr_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8375,
+            "released": "finetune_head",
+            "source": 0.827,
+            "shipped": 0.8375,
+            "delta": 0.010500000000000065
+          },
+          {
+            "task": "aptos2eyepacs_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.7163,
+            "released": "source",
+            "source": 0.7163,
+            "shipped": 0.7163,
+            "delta": 0.0
+          },
+          {
+            "task": "aptos2messidor2_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.7209,
+            "released": "finetune_head",
+            "source": 0.7297,
+            "shipped": 0.7209,
+            "delta": -0.00880000000000003
+          },
+          {
+            "task": "breakhis_40to400_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8224,
+            "released": "source",
+            "source": 0.8011,
+            "shipped": 0.8011,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_resnet18",
+            "audit_winner": "bn_reset",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9319,
+            "released": "probe_head",
+            "source": 0.9312,
+            "shipped": 0.9324,
+            "delta": 0.0011999999999999789
+          },
+          {
+            "task": "camelyon17_swin_tiny",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9811,
+            "released": "source",
+            "source": 0.9811,
+            "shipped": 0.9811,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_vit_small",
+            "audit_winner": "finetune_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9592,
+            "released": "finetune_partial",
+            "source": 0.7033,
+            "shipped": 0.9592,
+            "delta": 0.2559
+          },
+          {
+            "task": "crc_nct2chaoyang_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8903,
+            "released": "finetune_head",
+            "source": 0.7273,
+            "shipped": 0.8903,
+            "delta": 0.16300000000000003
+          },
+          {
+            "task": "eyepacs2aptos_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9631,
+            "released": "source",
+            "source": 0.9631,
+            "shipped": 0.9631,
+            "delta": 0.0
+          },
+          {
+            "task": "ham2isic_resnet18",
+            "audit_winner": "tent",
+            "audit_score": 0.75,
+            "audit_winner_full": 0.7132,
+            "released": "finetune_head",
+            "source": 0.7669,
+            "shipped": 0.7702,
+            "delta": 0.0032999999999999696
+          },
+          {
+            "task": "ham2padufes_resnet18",
+            "audit_winner": "source",
+            "audit_score": 0.6111,
+            "audit_winner_full": 0.608,
+            "released": "source",
+            "source": 0.608,
+            "shipped": 0.608,
+            "delta": 0.0
+          },
+          {
+            "task": "nih2chexpert_resnet18",
+            "audit_winner": "finetune_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.6038,
+            "released": "finetune_partial",
+            "source": 0.7877,
+            "shipped": 0.6038,
+            "delta": -0.18389999999999995
+          },
+          {
+            "task": "pathmnist_resnet18",
+            "audit_winner": "wise_head",
+            "audit_score": 0.9861,
+            "audit_winner_full": 0.9916,
+            "released": "source",
+            "source": 0.9878,
+            "shipped": 0.9878,
+            "delta": 0.0
+          }
+        ]
+      },
+      {
+        "audit_score_winner": {
+          "n": 13,
+          "mean": 0.8443153846153846,
+          "mean_delta": 0.03427692307692308,
+          "improved": 7,
+          "tied": 4,
+          "harmed": 2,
+          "worst_delta": -0.015999999999999903
+        },
+        "medadaptagent": {
+          "n": 13,
+          "mean": 0.8428153846153846,
+          "mean_delta": 0.03277692307692307,
+          "improved": 7,
+          "tied": 4,
+          "harmed": 2,
+          "worst_delta": -0.015999999999999903
+        },
+        "choices": [
+          {
+            "task": "aptos2ddr_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.811,
+            "released": "finetune_head",
+            "source": 0.827,
+            "shipped": 0.811,
+            "delta": -0.015999999999999903
+          },
+          {
+            "task": "aptos2eyepacs_resnet18",
+            "audit_winner": "source",
+            "audit_score": 0.8333,
+            "audit_winner_full": 0.7163,
+            "released": "source",
+            "source": 0.7163,
+            "shipped": 0.7163,
+            "delta": 0.0
+          },
+          {
+            "task": "aptos2messidor2_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.7391,
+            "released": "finetune_head",
+            "source": 0.7297,
+            "shipped": 0.7391,
+            "delta": 0.009399999999999964
+          },
+          {
+            "task": "breakhis_40to400_resnet18",
+            "audit_winner": "wise_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8187,
+            "released": "finetune_partial",
+            "source": 0.8011,
+            "shipped": 0.7998,
+            "delta": -0.0013000000000000789
+          },
+          {
+            "task": "camelyon17_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9739,
+            "released": "finetune_head",
+            "source": 0.9312,
+            "shipped": 0.9739,
+            "delta": 0.04269999999999996
+          },
+          {
+            "task": "camelyon17_swin_tiny",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9811,
+            "released": "histogram_match_src",
+            "source": 0.9811,
+            "shipped": 0.9969,
+            "delta": 0.015800000000000036
+          },
+          {
+            "task": "camelyon17_vit_small",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9461,
+            "released": "finetune_head",
+            "source": 0.7033,
+            "shipped": 0.9461,
+            "delta": 0.24280000000000002
+          },
+          {
+            "task": "crc_nct2chaoyang_resnet18",
+            "audit_winner": "source",
+            "audit_score": 0.9444,
+            "audit_winner_full": 0.7273,
+            "released": "source",
+            "source": 0.7273,
+            "shipped": 0.7273,
+            "delta": 0.0
+          },
+          {
+            "task": "eyepacs2aptos_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9631,
+            "released": "source",
+            "source": 0.9631,
+            "shipped": 0.9631,
+            "delta": 0.0
+          },
+          {
+            "task": "ham2isic_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8244,
+            "released": "finetune_head",
+            "source": 0.7669,
+            "shipped": 0.8244,
+            "delta": 0.057499999999999996
+          },
+          {
+            "task": "ham2padufes_resnet18",
+            "audit_winner": "finetune_lora",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.6788,
+            "released": "finetune_lora",
+            "source": 0.608,
+            "shipped": 0.6788,
+            "delta": 0.07079999999999997
+          },
+          {
+            "task": "nih2chexpert_resnet18",
+            "audit_winner": "bn_reset",
+            "audit_score": 0.8889,
+            "audit_winner_full": 0.8088,
+            "released": "source",
+            "source": 0.7877,
+            "shipped": 0.7877,
+            "delta": 0.0
+          },
+          {
+            "task": "pathmnist_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9875,
+            "released": "finetune_lora",
+            "source": 0.9878,
+            "shipped": 0.9922,
+            "delta": 0.0043999999999999595
+          }
+        ]
+      },
+      {
+        "audit_score_winner": {
+          "n": 13,
+          "mean": 0.8044692307692307,
+          "mean_delta": -0.005569230769230771,
+          "improved": 6,
+          "tied": 2,
+          "harmed": 5,
+          "worst_delta": -0.34330000000000005
+        },
+        "medadaptagent": {
+          "n": 13,
+          "mean": 0.8422153846153846,
+          "mean_delta": 0.032176923076923075,
+          "improved": 3,
+          "tied": 7,
+          "harmed": 3,
+          "worst_delta": -0.03550000000000009
+        },
+        "choices": [
+          {
+            "task": "aptos2ddr_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.832,
+            "released": "source",
+            "source": 0.827,
+            "shipped": 0.827,
+            "delta": 0.0
+          },
+          {
+            "task": "aptos2eyepacs_resnet18",
+            "audit_winner": "probe_head",
+            "audit_score": 0.7778,
+            "audit_winner_full": 0.373,
+            "released": "finetune_lora",
+            "source": 0.7163,
+            "shipped": 0.6808,
+            "delta": -0.03550000000000009
+          },
+          {
+            "task": "aptos2messidor2_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 0.75,
+            "audit_winner_full": 0.7359,
+            "released": "source",
+            "source": 0.7297,
+            "shipped": 0.7297,
+            "delta": 0.0
+          },
+          {
+            "task": "breakhis_40to400_resnet18",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8011,
+            "released": "source",
+            "source": 0.8011,
+            "shipped": 0.8011,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9415,
+            "released": "source",
+            "source": 0.9312,
+            "shipped": 0.9312,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_swin_tiny",
+            "audit_winner": "source",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9811,
+            "released": "source",
+            "source": 0.9811,
+            "shipped": 0.9811,
+            "delta": 0.0
+          },
+          {
+            "task": "camelyon17_vit_small",
+            "audit_winner": "match_intensity_stats",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.9272,
+            "released": "match_intensity_stats",
+            "source": 0.7033,
+            "shipped": 0.9272,
+            "delta": 0.2239
+          },
+          {
+            "task": "crc_nct2chaoyang_resnet18",
+            "audit_winner": "finetune_head",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.8036,
+            "released": "finetune_head",
+            "source": 0.7273,
+            "shipped": 0.8036,
+            "delta": 0.07630000000000003
+          },
+          {
+            "task": "eyepacs2aptos_resnet18",
+            "audit_winner": "tent",
+            "audit_score": 0.9444,
+            "audit_winner_full": 0.9369,
+            "released": "source",
+            "source": 0.9631,
+            "shipped": 0.9631,
+            "delta": 0.0
+          },
+          {
+            "task": "ham2isic_resnet18",
+            "audit_winner": "probe_head",
+            "audit_score": 0.9167,
+            "audit_winner_full": 0.7351,
+            "released": "probe_head",
+            "source": 0.7669,
+            "shipped": 0.7351,
+            "delta": -0.03180000000000005
+          },
+          {
+            "task": "ham2padufes_resnet18",
+            "audit_winner": "finetune_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.7949,
+            "released": "finetune_partial",
+            "source": 0.608,
+            "shipped": 0.7949,
+            "delta": 0.18690000000000007
+          },
+          {
+            "task": "nih2chexpert_resnet18",
+            "audit_winner": "wise_partial",
+            "audit_score": 1.0,
+            "audit_winner_full": 0.6644,
+            "released": "finetune_lora",
+            "source": 0.7877,
+            "shipped": 0.7862,
+            "delta": -0.0014999999999999458
+          },
+          {
+            "task": "pathmnist_resnet18",
+            "audit_winner": "reinhard_stain",
+            "audit_score": 0.9653,
+            "audit_winner_full": 0.9314,
+            "released": "source",
+            "source": 0.9878,
+            "shipped": 0.9878,
+            "delta": 0.0
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="290" viewBox="0 0 1200 290" role="img" aria-labelledby="title desc">
+<title id="title">From your model to a new site</title><desc id="desc">Provide a source model, reference data and a budget. Inspect the domain shift, let the planner choose applicable adaptation tools, evaluate evidence, then ship, retain the source, or escalate.</desc>
+<rect width="1200" height="290" rx="24" fill="#f8f9f5"/><g font-family="Arial,Helvetica,sans-serif" fill="#233e45">
+<text x="36" y="40" font-size="12" letter-spacing="1.5" fill="#617276">A LOOK INSIDE THE HARNESS</text>
+<g transform="translate(36 74)"><rect width="231" height="147" rx="18" fill="#e2eee6"/><text x="20" y="35" font-size="13" fill="#5e8070">01 / BRING YOUR MODEL</text><text x="20" y="66" font-size="18">Model + reference data</text><text x="20" y="94" font-size="14" fill="#617276">New-site images</text><text x="20" y="118" font-size="14" fill="#617276">Label and compute budgets</text></g>
+<text x="282" y="153" font-size="25" fill="#80908a">→</text>
+<g transform="translate(319 74)"><rect width="231" height="147" rx="18" fill="#e9e4f6"/><text x="20" y="35" font-size="13" fill="#807093">02 / TAKE A LOOK</text><text x="20" y="66" font-size="18">Inspect the shift</text><text x="20" y="94" font-size="14" fill="#617276">Check model capabilities</text><text x="20" y="118" font-size="14" fill="#617276">Plan applicable tools</text></g>
+<text x="565" y="153" font-size="25" fill="#80908a">→</text>
+<g transform="translate(602 74)"><rect width="231" height="147" rx="18" fill="#f5ecd9"/><text x="20" y="35" font-size="13" fill="#9b8255">03 / TRY &amp; CHECK</text><text x="20" y="66" font-size="18">Adapt within budget</text><text x="20" y="94" font-size="14" fill="#617276">Compare candidate evidence</text><text x="20" y="118" font-size="14" fill="#617276">Record every decision</text></g>
+<text x="848" y="153" font-size="25" fill="#80908a">→</text>
+<g transform="translate(885 74)"><rect width="279" height="147" rx="18" fill="#e8eeea"/><text x="20" y="35" font-size="13" fill="#5e8070">04 / MAKE THE CALL</text><text x="20" y="66" font-size="18">Ship · keep source · escalate</text><text x="20" y="94" font-size="14" fill="#617276">Save supported inference artifacts</text><text x="20" y="118" font-size="14" fill="#617276">Explain what happened</text></g>
+<text x="36" y="259" font-size="12" fill="#71827b">Label-free evidence is a proxy. A delivery decision is not a clinical safety guarantee.</text></g></svg>

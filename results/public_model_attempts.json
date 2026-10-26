@@ -1,0 +1,75 @@
+[
+  {
+    "attempt": "spleen_unet",
+    "decision": "keep_source",
+    "selected_action": "source",
+    "source_dice": 0.3862,
+    "delivered_dice": 0.3862,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "saved decision record"
+  },
+  {
+    "attempt": "spleen_unet_amos_mri",
+    "decision": "ship",
+    "selected_action": "tent",
+    "source_dice": 0.0,
+    "delivered_dice": 0.1197,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "saved decision record"
+  },
+  {
+    "attempt": "swinunetr_amos_mri",
+    "decision": "ship",
+    "selected_action": "finetune_partial",
+    "source_dice": 0.0402,
+    "delivered_dice": 0.1914,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "results/public_model_evidence/swinunetr_amos_mri.json",
+    "k_labels": 5
+  },
+  {
+    "attempt": "swinunetr_amos_mri_K20",
+    "decision": "ship",
+    "selected_action": "finetune_partial",
+    "source_dice": 0.0402,
+    "delivered_dice": 0.264,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "saved decision record"
+  },
+  {
+    "attempt": "swinunetr_btcv",
+    "decision": "ship",
+    "selected_action": "finetune_lora",
+    "source_dice": 0.6688,
+    "delivered_dice": 0.7054,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "saved decision record"
+  },
+  {
+    "attempt": "wholebody_segresnet",
+    "decision": "keep_source",
+    "selected_action": "source",
+    "source_dice": 0.951,
+    "delivered_dice": 0.951,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "results/public_model_evidence/wholebody_segresnet.json",
+    "k_labels": 5
+  },
+  {
+    "attempt": "spleen_unet_amos_mri_K20",
+    "decision": "ship",
+    "selected_action": "finetune_lora",
+    "source_dice": 0.0,
+    "delivered_dice": 0.233,
+    "exact_reload_matches": 10,
+    "verified_package": true,
+    "evidence": "results/public_model_evidence/spleen_unet_amos_mri_K20.json",
+    "k_labels": 20
+  }
+]

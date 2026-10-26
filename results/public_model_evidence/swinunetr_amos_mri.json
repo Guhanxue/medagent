@@ -1,0 +1,220 @@
+{
+  "decision": "ship",
+  "selected_action": "finetune_partial",
+  "source_hidden_test_dice": 0.0402,
+  "delivered_hidden_test_dice": 0.1914,
+  "source_hidden_test_per_case": [
+    {
+      "index": 2,
+      "dice": 0.0459
+    },
+    {
+      "index": 4,
+      "dice": 0.0516
+    },
+    {
+      "index": 8,
+      "dice": 0.2078
+    },
+    {
+      "index": 10,
+      "dice": 0.0
+    },
+    {
+      "index": 14,
+      "dice": 0.031
+    },
+    {
+      "index": 16,
+      "dice": 0.0125
+    },
+    {
+      "index": 20,
+      "dice": 0.0058
+    },
+    {
+      "index": 22,
+      "dice": 0.0331
+    },
+    {
+      "index": 26,
+      "dice": 0.0143
+    },
+    {
+      "index": 29,
+      "dice": 0.0
+    }
+  ],
+  "delivered_hidden_test_per_case": [
+    {
+      "index": 2,
+      "dice": 0.2413
+    },
+    {
+      "index": 4,
+      "dice": 0.0257
+    },
+    {
+      "index": 8,
+      "dice": 0.4658
+    },
+    {
+      "index": 10,
+      "dice": 0.0089
+    },
+    {
+      "index": 14,
+      "dice": 0.1879
+    },
+    {
+      "index": 16,
+      "dice": 0.2205
+    },
+    {
+      "index": 20,
+      "dice": 0.1317
+    },
+    {
+      "index": 22,
+      "dice": 0.2659
+    },
+    {
+      "index": 26,
+      "dice": 0.1783
+    },
+    {
+      "index": 29,
+      "dice": 0.1884
+    }
+  ],
+  "calibration_holdout_dice": {
+    "source": 0.0442,
+    "histogram_match": 0.0296,
+    "finetune_head": 0.0442,
+    "finetune_lora": 0.1771,
+    "finetune_partial": 0.1866
+  },
+  "budget_spent": {
+    "compute_minutes": 43.0,
+    "n_trials": 1,
+    "llm_usd": 0.04,
+    "k_labels": 5
+  },
+  "steps": 16,
+  "runtime_seconds": 992.4,
+  "provenance": {
+    "model_id": "swinunetr_amos_mri",
+    "bundle": "swin_unetr_btcv_segmentation",
+    "bundle_version": "0.5.8",
+    "architecture": "Swin UNETR",
+    "official_url": "https://huggingface.co/MONAI/swin_unetr_btcv_segmentation",
+    "checkpoint_sha256": "52e7c3114444e41bb14f644e0dd2b7d42d70ad4b4dec0c1bfa4a552a4b92a096",
+    "source_domain": "BTCV contrast-enhanced abdominal CT",
+    "target_domain": "AMOS multicenter abdominal MRI (CT-to-MRI modality shift)"
+  },
+  "split": {
+    "selection_rule": "K=5 uses five interleaved calibration cases from 15 evenly spaced cases; the other ten are fixed hidden test. K=20 appends non-test cases in index order. Every third calibration position is selection; the rest train.",
+    "k_labels": 5,
+    "calibration_indices": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "calibration_case_ids": [
+      "amos_0507.nii.gz",
+      "amos_0522.nii.gz",
+      "amos_0548.nii.gz",
+      "amos_0570.nii.gz",
+      "amos_0584.nii.gz"
+    ],
+    "calibration_train_indices": [
+      6,
+      12,
+      24
+    ],
+    "calibration_holdout_indices": [
+      0,
+      18
+    ],
+    "hidden_test_indices": [
+      2,
+      4,
+      8,
+      10,
+      14,
+      16,
+      20,
+      22,
+      26,
+      29
+    ],
+    "hidden_test_case_ids": [
+      "amos_0510.nii.gz",
+      "amos_0517.nii.gz",
+      "amos_0532.nii.gz",
+      "amos_0540.nii.gz",
+      "amos_0554.nii.gz",
+      "amos_0557.nii.gz",
+      "amos_0578.nii.gz",
+      "amos_0582.nii.gz",
+      "amos_0586.nii.gz",
+      "amos_0589.nii.gz"
+    ],
+    "hidden_test_labels_visible_to_controller": false
+  },
+  "reload_verification": {
+    "artifact": "eager_package",
+    "artifact_format": "python_eager_cloudpickle",
+    "verified": true,
+    "verification_set": "all 10 hidden-test cases",
+    "exact_matching_prediction_masks": 10,
+    "mean_hidden_test_dice": 0.1914,
+    "max_absolute_case_dice_difference": 0.0
+  },
+  "standalone_verification": {
+    "verified": true,
+    "case_index": 2,
+    "case_id": "amos_0510.nii.gz",
+    "separate_process": true,
+    "api_credentials_removed": true,
+    "changed_voxels_vs_fresh_reload": 0,
+    "dice": 0.2413,
+    "expected_dice": 0.2413,
+    "mask_sha256": "49f49833291dcd0b4744f2bc4c5852962a0d0b7221a1503aede1b5e298c20753",
+    "mask_shape": [
+      244,
+      104,
+      225
+    ]
+  },
+  "source_record_sha256": "a6d2d4641464d9b08edac7589d2b3011c71e5c131dd73f0cf627634831ab932e",
+  "source_snapshot": {
+    "job_array": "2577637",
+    "python": "3.10.20",
+    "files": {
+      "harness/core.py": "99ed449fcd3e0d9130077ca0e1ee1928d7b7c5656aebbc73033190cac473c92d",
+      "harness/llm_policy.py": "22b8bc2203c6f9c6e233035a06a80bfb61f4c481625007c2b97f3603de3cf74e",
+      "harness/seg3d_delivery.py": "7baf92ceddc9e550aecb505b6ff46a589bef172f87af65b146964754b4a5a7cc",
+      "harness/seg3d_adapter.py": "2b4b6b0406b5a235a01937a4cab73bcd200c8fd7abec4f0f8d387dac0fa09578",
+      "medadaptagent/knowledge/llm_client.py": "ab82bc5a80da07cf2135739aae9de9f5a4ab492dae5dbbd01626059bc993e519",
+      "medadaptagent/tasks/segmentation_3d.py": "1956437562e635335319ec88b1713972b052608c803b78338b6c3a7edf6c3e43",
+      "scripts/run_public_model_repair.py": "c446e0d99f369df4a19572e832ddab90a9564c858c5d688b2482fc745c19adbf",
+      "scripts/public_repair_support.py": "2101287ba93c4812a0959dc7fdd1a7dc984e0dd7f454095d195b44ff63057a41",
+      "scripts/_source_loader.py": "ac56d4a427f66d602cbe5c6bc083076b488bd92470abf8de7622d01937b30de6"
+    }
+  },
+  "runtime_versions": {
+    "python": "3.10.20",
+    "packages": {
+      "torch": "2.12.0+cu130",
+      "monai": "1.5.2",
+      "numpy": "1.26.4",
+      "openai": "2.37.0",
+      "httpx": "0.28.1",
+      "cloudpickle": "3.1.2"
+    },
+    "cuda": "13.0"
+  }
+}

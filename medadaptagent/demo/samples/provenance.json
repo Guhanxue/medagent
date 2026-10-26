@@ -1,0 +1,33 @@
+{
+  "dataset": "PneumoniaMNIST (MedMNIST+ 128)",
+  "record": "https://doi.org/10.5281/zenodo.10519652",
+  "download_url": "https://zenodo.org/records/10519652/files/pneumoniamnist_128.npz?download=1",
+  "archive_md5": "05b46931834c231683c68f40c47b2971",
+  "archive_sha256": "a03c2ecea389a0ee449ebffe1e07171ca3dab488f6e04919f94ac83f5e7af25b",
+  "subset_sha256": "c78d027fed63a5024e26acc3f094964b6ae1c33d635fa84026b3ca5732e54554",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "source_split": "train",
+  "source_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "example_split": "test",
+  "example_indices": [
+    0,
+    1,
+    2
+  ],
+  "labels": {
+    "0": "normal",
+    "1": "pneumonia"
+  },
+  "changes": "Nine images selected from the official 128-pixel archive. Stored pixels unchanged. The demo normalizes images and optionally adds a brightness shift at runtime.",
+  "creators": "Jiancheng Yang, Rui Shi, Donglai Wei, Zequan Liu, Lin Zhao, Bilian Ke, Hanspeter Pfister, Bingbing Ni",
+  "paper": "https://doi.org/10.1038/s41597-022-01721-8",
+  "original_dataset": "Kermany et al., Labeled Optical Coherence Tomography (OCT) and Chest X-Ray Images for Classification; https://doi.org/10.17632/rscbjbr9sj.2"
+}

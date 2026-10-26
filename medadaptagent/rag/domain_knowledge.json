@@ -1,0 +1,660 @@
+{
+  "_meta": {
+    "description": "Structured domain knowledge base for MedAdaptAgent. Each entry captures paper-level knowledge about source/target domains, imaging physics, training protocols, and literature-recommended adaptation strategies.",
+    "version": "1.0"
+  },
+  "chaos_ct_to_mr": {
+    "dataset_paper": "Kavur et al., CHAOS Challenge: Combined (CT-MR) Healthy Abdominal Organ Segmentation, Medical Image Analysis 2021",
+    "source": {
+      "modality": "CT",
+      "sequence": "contrast-enhanced abdominal CT",
+      "imaging_physics": "X-ray attenuation measured in Hounsfield Units (HU). Liver appears ~60-80 HU, vessels enhanced by contrast agent. Fixed physical scale.",
+      "intensity_standardization": "absolute",
+      "intensity_scale_note": "HU provides an absolute intensity scale (water=0, air=-1000). Same tissue always maps to similar HU across scanners.",
+      "noise_model": "Poisson-Gaussian (dose-dependent, spatially uniform)",
+      "typical_resolution_mm": [
+        0.7,
+        0.7,
+        3.0
+      ],
+      "preprocessing": "Windowed to [-200, 300] HU, min-max normalized to [0,1]",
+      "n_patients": 20,
+      "contrast_properties": "Sharp organ boundaries due to high spatial resolution and density contrast. Clear liver-to-background separation."
+    },
+    "target": {
+      "modality": "MRI",
+      "sequence": "T2-SPIR (T2-weighted with spectral presaturation inversion recovery fat suppression)",
+      "imaging_physics": "Signal from T2 relaxation. Fluid appears bright, solid organs intermediate, fat suppressed. Intensity depends on scanner, coil, gain, and patient positioning.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "MRI has NO absolute intensity scale. Same tissue can have wildly different values across scanners/sessions. Percentile normalization required.",
+      "noise_model": "Rician (magnitude from complex Gaussian). Spatially varying due to B1 field inhomogeneity and coil sensitivity profiles.",
+      "typical_resolution_mm": [
+        1.5,
+        1.5,
+        6.0
+      ],
+      "preprocessing": "Percentile-normalized [p1, p99] to [0,1]",
+      "n_patients": 20,
+      "contrast_properties": "Liver boundaries softer than CT. Vessels may appear different (flow voids). Surrounding fat is suppressed (unlike CT)."
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "non_linear",
+      "intensity_mapping_detail": "CT HU is linear with tissue density. MRI T2 signal depends on water content, T2 relaxation, and B1 field. No linear or even monotonic mapping between CT and MRI intensity for the same tissue.",
+      "standardization_gap": "severe",
+      "standardization_gap_detail": "CT has absolute HU scale. MRI has arbitrary units. BN statistics trained on CT HU distributions will be completely wrong for MRI.",
+      "noise_model_change": "gaussian_to_rician",
+      "noise_model_detail": "CT has approximately Gaussian noise. MRI has Rician noise with spatially varying SNR due to coil sensitivity. This affects texture-level features.",
+      "resolution_gap": "moderate",
+      "resolution_gap_detail": "CT typically 0.7mm in-plane, 3mm slices. MRI T2 typically 1.5mm in-plane, 5-8mm slices. Thicker MRI slices cause partial volume effects at organ boundaries.",
+      "contrast_mechanism": "fundamentally_different",
+      "contrast_mechanism_detail": "CT: density-based (bone bright, air dark, soft tissue intermediate). MRI T2: water/fluid-based (fluid bright, solid organs intermediate, fat suppressed). Tissue contrast relationships are reversed for some structures.",
+      "boundary_sharpness_change": "sharp_to_blurry",
+      "boundary_sharpness_detail": "CT provides sharp organ boundaries. MRI T2 boundaries are softer due to lower resolution, partial volume, and susceptibility artifacts.",
+      "appearance_reversals": [
+        "Vessels may change from bright (contrast CT) to dark (flow voids in MRI)",
+        "Fat goes from bright (CT) to suppressed (SPIR)",
+        "Kidney appearance fundamentally different between modalities"
+      ]
+    },
+    "literature_evidence": {
+      "key_papers": [
+        {
+          "ref": "Dou et al., PnP-AdaNet, IEEE TMI 2019",
+          "finding": "Plug-and-play domain adaptation for cross-modality cardiac segmentation. Adversarial alignment at feature level outperforms image-level transfer."
+        },
+        {
+          "ref": "Chen et al., Unsupervised Bidirectional Cross-Modality Adaptation, MICCAI 2020",
+          "finding": "Bidirectional image translation + segmentation improves CT-MRI adaptation."
+        },
+        {
+          "ref": "Bateson et al., Source-Free Domain Adaptation, MICCAI 2022",
+          "finding": "For source-free cross-modality, BN adaptation + entropy minimization provides reasonable baseline. Pure entropy minimization often collapses."
+        },
+        {
+          "ref": "Karani et al., Test-Time Adaptable Neural Networks, MedIA 2021",
+          "finding": "Test-time BN adaptation helps but is insufficient alone for cross-modality. Additional self-supervised losses needed."
+        }
+      ],
+      "what_works": [
+        "BN statistics recalculation (essential first step for any cross-modality)",
+        "Multi-loss adaptation (entropy + consistency + diversity) with wider scope than BN-only",
+        "Frequency-domain style transfer to bridge appearance gap",
+        "Conservative learning rate (cross-modality needs careful optimization, easy to collapse)"
+      ],
+      "what_fails": [
+        "Pure Tent (1-step entropy) - often collapses when distribution gap is too large",
+        "BN-only scope with high LR - insufficient capacity to bridge cross-modality gap",
+        "Aggressive pseudo-labeling - initial predictions too wrong to bootstrap from",
+        "Per-image adaptation without batch context - no stable gradient signal"
+      ]
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn+output for cross-modality. BN-only is insufficient but bn+decoder1 risks overfitting.",
+      "loss_emphasis": "High BN adaptation weight. Moderate entropy. Consistency important (noise model change). Diversity loss prevents collapse.",
+      "learning_rate": "Conservative (5e-4). Cross-modality optimization landscape is rugged. Lower LR (3e-4) if using wider scope.",
+      "adaptation_mode": "Batch multi-loss (NOT per-image Tent). Need stable gradients from batch statistics.",
+      "num_steps": "More steps needed (100-200). Large distribution gap requires more gradient updates.",
+      "post_processing": "Anatomy priors helpful (liver should be single large connected component)."
+    }
+  },
+  "riga_plus_cross_device": {
+    "dataset_paper": "Almazroa et al., Retinal Fundus Images for Glaucoma Analysis, 2017. RIGA dataset combining BinRushed, Magrabia, MESSIDOR.",
+    "source": {
+      "modality": "fundus_photography",
+      "sequence": "color fundus photograph",
+      "imaging_physics": "Visible light reflected from retinal surface. Color depends on illumination wavelength, fundus pigmentation, and camera optics.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "RGB values depend entirely on camera model, gain, white balance, exposure time, and patient pigmentation. No standardization.",
+      "noise_model": "Camera sensor noise (Gaussian + shot noise), varies with exposure",
+      "typical_resolution_mm": [
+        0.01,
+        0.01
+      ],
+      "preprocessing": "Center-cropped to optic disc region, resized to 512x512, min-max normalized",
+      "n_patients": 195,
+      "contrast_properties": "BinRushed: Saudi hospital cameras, distinct color profile (often more saturated oranges)",
+      "acquisition_site": "King Abdulaziz University Hospital, Riyadh, Saudi Arabia",
+      "camera_info": "Topcon TRC-NW8 and Canon CR-2 fundus cameras"
+    },
+    "target": {
+      "modality": "fundus_photography",
+      "sequence": "color fundus photograph",
+      "imaging_physics": "Same modality but different cameras/sites change color rendition, exposure, and resolution",
+      "intensity_standardization": "none",
+      "noise_model": "Camera-dependent",
+      "targets": {
+        "Magrabia": {
+          "site": "Magrabi Eye Hospital, Saudi Arabia",
+          "camera_info": "Different Topcon model, different calibration",
+          "expected_shift": "Moderate color shift (same region, different equipment). Green channel may differ most."
+        },
+        "MESSIDOR_Base1": {
+          "site": "French hospital (Brest)",
+          "camera_info": "Topcon TRC NW6",
+          "expected_shift": "Larger shift (different country, different camera model, different patient demographics)"
+        },
+        "MESSIDOR_Base2": {
+          "site": "French hospital (unknown)",
+          "expected_shift": "Similar to Base1 but slightly different camera settings"
+        },
+        "MESSIDOR_Base3": {
+          "site": "French hospital (unknown)",
+          "expected_shift": "Similar to Base1/Base2"
+        }
+      },
+      "contrast_properties": "MESSIDOR targets tend to have different color temperature, exposure levels, and field of view compared to BinRushed source."
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "approximately_linear",
+      "intensity_mapping_detail": "Same modality (visible light fundus). Shift is primarily gain/offset/white balance differences - approximately linear per channel. Color histogram matching could largely correct it.",
+      "standardization_gap": "mild",
+      "standardization_gap_detail": "No physical intensity standard, but same modality (visible-light fundus) means similar relative contrast. BN stats shift is mild \u00e2\u0080\u0094 primarily gain/offset differences that BN reset corrects well.",
+      "noise_model_change": "similar",
+      "noise_model_detail": "All are camera sensors. Different noise levels but same noise type (shot + read noise).",
+      "resolution_gap": "mild",
+      "resolution_gap_detail": "Different cameras have different pixel counts but ROI crops normalize this. Minor sharpness differences.",
+      "contrast_mechanism": "same",
+      "contrast_mechanism_detail": "All visible-light fundus photography. Same tissue-to-color mapping, just different color rendition.",
+      "boundary_sharpness_change": "minimal",
+      "boundary_sharpness_detail": "Optic disc/cup boundaries appear similarly across cameras. Main difference is color/contrast, not edge quality.",
+      "appearance_reversals": []
+    },
+    "literature_evidence": {
+      "key_papers": [
+        {
+          "ref": "Wang et al., Tent: Fully Test-Time Adaptation, ICLR 2021",
+          "finding": "Per-image entropy minimization on BN affine parameters. Works well for mild-moderate shifts."
+        },
+        {
+          "ref": "Liu et al., SFDA for Fundus Image Segmentation, MICCAI 2022",
+          "finding": "Source-free adaptation using pseudo-labels + consistency on fundus cross-device."
+        },
+        {
+          "ref": "Hu et al., Domain-Specific Batch Normalization, CVPR 2021",
+          "finding": "Domain-specific BN parameters effectively handle multi-site fundus variation."
+        }
+      ],
+      "what_works": [
+        "Per-image Tent (BN affine entropy minimization) - often sufficient for cross-device fundus",
+        "BN statistics adaptation (recalculate running stats on target)",
+        "Color normalization as preprocessing (Reinhard, histogram matching)"
+      ],
+      "what_fails": [
+        "Overly aggressive adaptation (wider scope or high LR) - can destroy good features since shift is mild",
+        "Too many gradient steps - overfits to target noise"
+      ]
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn_only (sufficient for cross-device same-modality)",
+      "loss_emphasis": "Entropy is primary (BN affine correction). BN adaptation useful. Low consistency/diversity (shift is mild).",
+      "learning_rate": "Standard (1e-3). Mild shift allows standard Tent LR.",
+      "adaptation_mode": "Per-image Tent works well. Batch mode also fine but unnecessary overhead.",
+      "num_steps": "Few steps (1 pass through data, capped). Mild shift corrects quickly.",
+      "post_processing": "Disc-contains-cup anatomical constraint helpful."
+    }
+  },
+  "prostate_cross_site": {
+    "dataset_paper": "Liu et al., SAML: Shape-Aware Meta-Learning for Generalizable Prostate MRI Segmentation, MICCAI 2020. Multi-site prostate T2w MRI from 6 institutions.",
+    "source": {
+      "modality": "MRI",
+      "sequence": "T2-weighted",
+      "imaging_physics": "T2-weighted MRI. Prostate appears as intermediate-bright structure in pelvis. Signal depends on scanner vendor, field strength, coil, and sequence parameters.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "MRI arbitrary units. Same anatomy looks different across sites/vendors.",
+      "noise_model": "Rician noise, varies with field strength and coil",
+      "typical_resolution_mm": [
+        0.5,
+        0.5,
+        3.0
+      ],
+      "preprocessing": "Percentile normalization, center-cropped to prostate region",
+      "n_patients": 30,
+      "acquisition_site": "Radboud University Medical Center (RUNMC)",
+      "scanner_info": "Siemens 3T TrioTim, endorectal coil"
+    },
+    "target": {
+      "modality": "MRI",
+      "sequence": "T2-weighted",
+      "targets": {
+        "BIDMC": {
+          "site": "Beth Israel Deaconess Medical Center",
+          "scanner": "GE 3T",
+          "expected_shift": "Different vendor (Siemens->GE), different coil sensitivity profiles. Moderate intensity shift."
+        },
+        "HK": {
+          "site": "Prince of Wales Hospital, Hong Kong",
+          "scanner": "Siemens 3T Trio",
+          "expected_shift": "Same vendor, different institution. Mild shift (calibration differences, different patient population)."
+        },
+        "I2CVB": {
+          "site": "I2CVB (Dijon, France)",
+          "scanner": "Siemens 1.5T Avanto",
+          "expected_shift": "Different field strength (3T->1.5T) changes SNR and contrast. Moderate-to-large shift."
+        },
+        "UCL": {
+          "site": "University College London",
+          "scanner": "Siemens 3T",
+          "expected_shift": "Same vendor. Mild-moderate shift from different coil and sequence parameters."
+        },
+        "BMC": {
+          "site": "BMC",
+          "scanner": "Philips 3T",
+          "expected_shift": "Different vendor (Siemens->Philips). Moderate shift from vendor-specific reconstruction and intensity scaling."
+        }
+      }
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "approximately_linear",
+      "intensity_mapping_detail": "Same modality (T2w MRI) across sites. Shift is primarily from different vendor reconstruction, gain, and coil sensitivity. Approximately linear intensity transform per-site.",
+      "standardization_gap": "moderate",
+      "standardization_gap_detail": "No MRI intensity standard. Different vendors produce different intensity ranges for same tissue. BN stats need recalibration.",
+      "noise_model_change": "moderate",
+      "noise_model_detail": "All Rician but different SNR levels (1.5T vs 3T, different coils). I2CVB at 1.5T has notably lower SNR.",
+      "resolution_gap": "mild_to_moderate",
+      "resolution_gap_detail": "All are high-resolution pelvic MRI but exact resolution varies. Some sites use endorectal coil (higher local SNR) while others use surface coil.",
+      "contrast_mechanism": "same",
+      "contrast_mechanism_detail": "All T2-weighted. Prostate zonal anatomy visible in all. Same tissue contrast relationships.",
+      "boundary_sharpness_change": "site_dependent",
+      "boundary_sharpness_detail": "Sites with endorectal coil have sharper prostate boundaries. Surface coil sites may have softer boundaries, especially at periphery.",
+      "appearance_reversals": [],
+      "per_site_severity_ranking": [
+        "HK (mild)",
+        "UCL (mild-moderate)",
+        "BMC (moderate)",
+        "BIDMC (moderate)",
+        "I2CVB (moderate-large, field strength change)"
+      ]
+    },
+    "literature_evidence": {
+      "key_papers": [
+        {
+          "ref": "Liu et al., Shape-Aware Meta-Learning (SAML), MICCAI 2020",
+          "finding": "Meta-learning across sites helps generalization. Shape priors regularize prediction."
+        },
+        {
+          "ref": "Liu et al., MS-Net: Multi-Site Network, MedIA 2020",
+          "finding": "Site-specific BN layers enable multi-site training. BN is the key domain-specific component."
+        },
+        {
+          "ref": "Shen et al., ProDE, 2023",
+          "finding": "Progressive domain expansion for prostate MRI adaptation. Gradual adaptation outperforms single-step."
+        }
+      ],
+      "what_works": [
+        "BN statistics adaptation (essential for cross-vendor MRI)",
+        "Per-image Tent for mild-shift sites (HK, UCL)",
+        "Batch multi-loss for moderate-shift sites (BIDMC, I2CVB, BMC)",
+        "Shape-aware regularization (prostate should be elliptical)"
+      ],
+      "what_fails": [
+        "Aggressive decoder-level adaptation for mild-shift sites (destroys good features)",
+        "Single adaptation strategy for all sites (heterogeneous shift levels need different approaches)"
+      ]
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn_only for mild sites (HK, UCL). bn+output for moderate sites (BIDMC, I2CVB, BMC).",
+      "loss_emphasis": "Entropy primary for mild shifts. Add consistency for moderate shifts. Diversity prevents mode collapse.",
+      "learning_rate": "1e-3 for bn_only. 3e-4 to 5e-4 for wider scope.",
+      "adaptation_mode": "Per-image Tent for mild. Batch multi-loss for moderate.",
+      "num_steps": "Low for mild (1 pass). Higher for moderate (80-120 steps).",
+      "post_processing": "Prostate shape prior (single elliptical component, 2-20% of slice)."
+    }
+  },
+  "fundus_stress_test": {
+    "dataset_paper": "Orlando et al., REFUGE Challenge: A Unified Framework for Evaluating Automated Methods for Glaucoma Assessment, MedIA 2020",
+    "source": {
+      "modality": "fundus_photography",
+      "sequence": "color fundus photograph",
+      "imaging_physics": "Visible light photography. Zeiss Visucam 500 at source site.",
+      "intensity_standardization": "none",
+      "preprocessing": "Center crop, resize to 256x256, normalized to [0,1]",
+      "acquisition_site": "REFUGE training split",
+      "camera_info": "Zeiss Visucam 500"
+    },
+    "target": {
+      "modality": "fundus_photography",
+      "sequence": "color fundus photograph, full-field (not cropped to disc)",
+      "imaging_physics": "Same modality but full field of view shows entire retina, not just disc region",
+      "acquisition_site": "RIM-ONE r3",
+      "camera_info": "Nidek AFC-210 fundus camera",
+      "key_challenge": "Target images are FULL RETINA (optic disc is small portion of image) while source was disc-cropped. This creates extreme scale mismatch."
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "approximately_linear",
+      "intensity_mapping_detail": "Same modality. Color/brightness differences from different camera.",
+      "standardization_gap": "moderate",
+      "noise_model_change": "similar",
+      "resolution_gap": "extreme_scale_mismatch",
+      "resolution_gap_detail": "Source: disc fills ~80% of image. Target: disc is ~5-15% of full retina image. This is NOT a resolution gap but a field-of-view and scale mismatch. The model has never seen full-retina context.",
+      "contrast_mechanism": "same",
+      "boundary_sharpness_change": "minimal",
+      "appearance_reversals": [],
+      "dominant_shift": "Extreme foreground scale mismatch. Disc/cup occupy tiny fraction of target image. Model trained on disc-centric crops will be completely lost."
+    },
+    "literature_evidence": {
+      "what_works": [
+        "ROI detection as preprocessing (detect disc region, crop, then segment)",
+        "Multi-scale adaptation to handle FOV change",
+        "Aggressive adaptation (decoder-level) since scale shift is extreme"
+      ],
+      "what_fails": [
+        "Standard Tent - entropy is already low (confident background predictions everywhere)",
+        "BN-only adaptation - insufficient to handle scale/context shift",
+        "Any approach that doesn't address the fundamental scale mismatch"
+      ]
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn+decoder1 (extreme shift requires decoder-level adaptation)",
+      "loss_emphasis": "High diversity (prevent all-background collapse). High BN adaptation. Moderate entropy.",
+      "learning_rate": "Conservative (5e-4). Easy to collapse with extreme shift.",
+      "adaptation_mode": "Batch multi-loss. Need stable batch-level gradients.",
+      "num_steps": "More steps (150-200). Large gap needs more optimization.",
+      "post_processing": "Strong anatomy priors (disc contains cup, disc is single connected component)."
+    }
+  },
+  "fundus_cross_device": {
+    "dataset_paper": "Same as fundus_stress_test but with ROI-cropped target (disc region extracted)",
+    "source": {
+      "modality": "fundus_photography",
+      "camera_info": "Zeiss Visucam 500 (REFUGE)",
+      "preprocessing": "Disc-centered crop, 256x256"
+    },
+    "target": {
+      "modality": "fundus_photography",
+      "camera_info": "Nidek AFC-210 (RIM-ONE r3)",
+      "preprocessing": "ROI-detected and cropped to disc region, 256x256",
+      "key_difference_from_stress_test": "Scale mismatch resolved by ROI detection. Remaining shift is cross-device color/contrast."
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "approximately_linear",
+      "standardization_gap": "moderate",
+      "noise_model_change": "similar",
+      "resolution_gap": "mild",
+      "contrast_mechanism": "same",
+      "boundary_sharpness_change": "mild",
+      "dominant_shift": "Cross-device color/contrast shift. Camera white balance, exposure, and optics differ between Zeiss and Nidek."
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn+output (moderate cross-device shift needs output head adaptation, bn_only insufficient for REFUGE->RIM-ONE color gap)",
+      "loss_emphasis": "Entropy + diversity primary. BN adaptation for statistics, output head for decision boundary.",
+      "learning_rate": "3e-4 (moderate, conservative to avoid cup collapse)",
+      "adaptation_mode": "Batch multi-loss. Per-image Tent insufficient for this shift magnitude.",
+      "num_steps": "80-100 steps per iteration.",
+      "post_processing": "Disc-contains-cup constraint, but evaluate raw vs post-processed (CDR enforcement can destroy cup predictions)."
+    }
+  },
+  "brats_t1_to_t2": {
+    "dataset_paper": "Simpson et al., A Large Annotated Medical Image Dataset for the Development and Evaluation of Segmentation Algorithms, arXiv 2019 (Medical Segmentation Decathlon). Original BraTS: Menze et al., The Multimodal Brain Tumor Image Segmentation Benchmark (BraTS), IEEE TMI 2015.",
+    "source": {
+      "modality": "MRI",
+      "sequence": "T1-weighted",
+      "imaging_physics": "T1-weighted MRI. Signal depends on T1 relaxation time. Fat and gadolinium-enhanced tissue appear bright. CSF appears dark. Gray matter darker than white matter.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "MRI arbitrary units. Percentile-normalized per volume.",
+      "noise_model": "Rician noise",
+      "typical_resolution_mm": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "preprocessing": "Co-registered to SRI24 atlas, skull-stripped, interpolated to 1mm isotropic, percentile-normalized",
+      "n_patients": 484,
+      "contrast_properties": "T1: White matter brighter than gray matter. Tumor typically hypointense or isointense. Edema poorly visible."
+    },
+    "target": {
+      "modality": "MRI",
+      "sequence": "T2-weighted",
+      "imaging_physics": "T2-weighted MRI. Signal depends on T2 relaxation time. Fluid/CSF appears very bright. Edema appears bright. Gray matter brighter than white matter (opposite of T1).",
+      "intensity_standardization": "none",
+      "noise_model": "Rician noise",
+      "typical_resolution_mm": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "preprocessing": "Same co-registration and skull-stripping as T1",
+      "contrast_properties": "T2: CSF very bright, edema bright, tumor variable. Gray-white matter contrast REVERSED compared to T1."
+    },
+    "shift_characteristics": {
+      "intensity_mapping": "non_linear",
+      "intensity_mapping_detail": "T1 and T2 contrast depend on different tissue relaxation properties. The mapping between T1 and T2 signal intensity is tissue-dependent and non-linear. CSF is dark in T1 but very bright in T2. Gray-white matter contrast is reversed.",
+      "standardization_gap": "moderate",
+      "standardization_gap_detail": "Both are MRI with arbitrary intensity units. Different sequences produce different intensity distributions for the same anatomy. BN statistics will be mismatched.",
+      "noise_model_change": "similar",
+      "noise_model_detail": "Both are MRI with Rician noise. Similar noise characteristics since they come from the same scanner.",
+      "resolution_gap": "none",
+      "resolution_gap_detail": "Co-registered to same atlas at 1mm isotropic. Perfectly aligned spatially.",
+      "contrast_mechanism": "different",
+      "contrast_mechanism_detail": "T1 contrast: depends on T1 relaxation (longitudinal recovery). T2 contrast: depends on T2 relaxation (transverse decay). Same tissue can appear very different. CSF: dark in T1, bright in T2. Gray matter: dark in T1, brighter in T2. The contrast relationships are partially reversed.",
+      "boundary_sharpness_change": "similar",
+      "boundary_sharpness_detail": "Both sequences have similar spatial resolution and are co-registered. Tumor boundaries may be more or less visible depending on sequence (edema more visible in T2).",
+      "appearance_reversals": [
+        "CSF: dark in T1, very bright in T2",
+        "Gray-white matter contrast is reversed",
+        "Edema: poorly visible in T1, bright in T2"
+      ]
+    },
+    "literature_evidence": {
+      "key_papers": [
+        {
+          "ref": "Chen et al., Unsupervised Bidirectional Cross-Modality Adaptation, MICCAI 2020",
+          "finding": "Cross-sequence MRI adaptation benefits from bidirectional image translation. Feature-level alignment helps."
+        },
+        {
+          "ref": "Karani et al., Test-Time Adaptable Neural Networks, MedIA 2021",
+          "finding": "Test-time BN adaptation provides moderate improvement for cross-sequence MRI. Additional self-supervised losses improve further."
+        },
+        {
+          "ref": "Wang et al., Tent, ICLR 2021",
+          "finding": "Per-image entropy minimization on BN parameters. Works for mild-moderate shifts but may struggle with contrast reversals."
+        }
+      ],
+      "what_works": [
+        "Histogram matching as input preprocessing — match T2 intensity histogram to T1 reference. Reduces contrast gap so model's learned features are more applicable. Simple but effective baseline.",
+        "Self-training with FILTERED pseudo-labels — predict on preprocessed target, only keep predictions where confidence > threshold AND TTA variance is low. Discard hallucinated regions. Retrain on filtered pseudo-labels.",
+        "BN statistics recalculation after preprocessing — essential since intensity distributions differ significantly",
+        "Conservative adaptation with diversity loss — prevent model from collapsing to all-foreground or all-background predictions",
+        "Connected component filtering — tumor predictions should be spatially coherent, not scattered noise"
+      ],
+      "what_fails": [
+        "Entropy minimization alone — reinforces hallucinations. Model confidently predicts CSF as tumor, entropy makes it more confident in wrong predictions.",
+        "BN-only adaptation without preprocessing — insufficient for contrast reversals. BN statistics shift toward T2 distribution but model features still expect T1 contrast patterns.",
+        "Aggressive decoder adaptation — overfits to hallucinated predictions since appearance reversals confuse decoder features",
+        "Per-image Tent alone — contrast reversals cause entropy to mislead, model rapidly collapses",
+        "Standard self-training without filtering — pseudo-labels from hallucinating model propagate errors"
+      ],
+      "recommended_strategy": "histogram_matching_then_self_training",
+      "recommended_strategy_detail": "Step 1: Histogram-match T2 images to T1 reference distribution. Step 2: Run source model on preprocessed images to get initial predictions. Step 3: Filter pseudo-labels by confidence + TTA consistency (reject hallucinated regions). Step 4: Conservative BN+output adaptation using filtered pseudo-labels + diversity loss. NO entropy minimization."
+    },
+    "recommended_plan_adjustments": {
+      "trainable_scope": "bn+output (contrast reversal requires output head adjustment but decoder features partially transfer since both are brain MRI)",
+      "loss_emphasis": "NO entropy (reinforces hallucinations). High diversity (prevent collapse). Filtered pseudo-label loss. BN adapt after histogram matching.",
+      "learning_rate": "Very conservative (1e-4). After histogram matching, residual gap is smaller.",
+      "adaptation_mode": "Batch multi-loss with histogram matching preprocessing.",
+      "num_steps": "Conservative (50-100). After preprocessing, less adaptation needed.",
+      "post_processing": "Connected component filtering on tumor predictions. Remove small isolated components.",
+      "preprocessing": "histogram_matching"
+    }
+  },
+  "mnms_cross_vendor": {
+    "dataset_paper": "Campello et al., Multi-Centre Multi-Vendor and Multi-Disease Cardiac Segmentation: The M&Ms Challenge, IEEE TMI 2021",
+    "source": {
+      "modality": "MRI",
+      "sequence": "Cine bSSFP (balanced steady-state free precession) short-axis cardiac",
+      "imaging_physics": "bSSFP provides T2/T1-weighted contrast. Blood pool appears bright (high T2/T1), myocardium intermediate, lung/air dark. Siemens scanners.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "MRI has no absolute intensity scale. Siemens bSSFP signal levels depend on coil, gain, shim settings.",
+      "noise_model": "Rician. Spatially varying due to surface coil sensitivity.",
+      "typical_resolution_mm": [
+        1.25,
+        1.25,
+        10.0
+      ],
+      "preprocessing": "Percentile-normalized [p1, p99] to [0,1]",
+      "n_patients": 75,
+      "contrast_properties": "Bright blood pool (LV/RV), intermediate myocardium. Good blood-myocardium contrast in Siemens bSSFP."
+    },
+    "target": {
+      "modality": "MRI",
+      "sequence": "Cine bSSFP short-axis cardiac",
+      "imaging_physics": "Same bSSFP sequence on GE scanners. GE bSSFP has different RF implementation, potentially different banding artifacts and fat-water behavior.",
+      "intensity_standardization": "none",
+      "intensity_scale_note": "GE bSSFP may have different signal levels, contrast ratios, and artifact patterns compared to Siemens.",
+      "noise_model": "Rician. Different coil configurations may change noise spatial distribution.",
+      "typical_resolution_mm": [
+        1.25,
+        1.25,
+        10.0
+      ],
+      "preprocessing": "Percentile-normalized [p1, p99] to [0,1]",
+      "n_patients": 75,
+      "contrast_properties": "Same tissue contrast mechanism but vendor-specific RF pulse design, gradient performance, and reconstruction algorithms create appearance differences."
+    },
+    "literature_evidence": {
+      "key_papers": [
+        {
+          "ref": "Campello et al., M&Ms Challenge, IEEE TMI 2021",
+          "finding": "Intensity-driven data augmentation was the most successful strategy. Models struggle most with unseen vendors."
+        },
+        {
+          "ref": "Full et al., Studying the effects of various data augmentations, STACOM 2020",
+          "finding": "Simple intensity augmentation bridges most of the vendor gap. BN adaptation is effective for mild shifts."
+        },
+        {
+          "ref": "Chen et al., Realistic Adversarial DA, IPMI 2019",
+          "finding": "Adversarial domain adaptation improves cross-vendor cardiac segmentation."
+        }
+      ],
+      "recommended_scope": "bn_only",
+      "recommended_mode": "Batch multi-loss",
+      "scope_rationale": "Same modality and sequence, vendor difference is primarily intensity/texture. BN adaptation sufficient for global normalization shift. Decoder adaptation only if BN insufficient.",
+      "known_failures": [
+        "AdaBN alone can fail if vendor has different artifact patterns (banding artifacts in bSSFP)",
+        "Tent may over-adapt on small ventricle regions, collapsing RV segmentation"
+      ]
+    },
+    "shift_characteristics": {
+      "shift_type": "cross-vendor (Siemens -> GE)",
+      "intensity_mapping": "approximately_linear",
+      "intensity_mapping_detail": "Same MRI sequence (bSSFP) on different vendors. Global intensity scale differs but tissue contrast ordering preserved. Near-linear with vendor-specific offset and gain.",
+      "standardization_gap": "mild",
+      "standardization_gap_detail": "Both use bSSFP. Vendor differences cause global intensity shift, minor texture differences from reconstruction algorithms, and different artifact patterns (banding).",
+      "contrast_mechanism": "same",
+      "contrast_mechanism_detail": "Both are bSSFP: same physical contrast mechanism (T2/T1 weighting). Blood bright, myocardium intermediate in both vendors.",
+      "dominant_shift": "Global intensity offset and gain differences between vendors, plus subtle texture differences from vendor-specific reconstruction.",
+      "boundary_sharpness_change": "vendor_dependent",
+      "boundary_sharpness_detail": "GE and Siemens bSSFP may have slightly different spatial resolution and partial volume effects at myocardial boundaries.",
+      "appearance_reversals": [],
+      "per_vendor_severity_ranking": [
+        "Siemens->GE (mild-moderate)",
+        "Siemens->Philips (mild)",
+        "Siemens->Canon (moderate, fewer training examples)"
+      ]
+    }
+  },
+  "mnms_cross_field": {
+    "dataset": "M&Ms-2 (Multi-Centre, Multi-Vendor & Multi-Disease Cardiac Image Segmentation Challenge 2)",
+      "source_domain": "1.5T cardiac MRI (343 subjects: Siemens 214, Philips 88, GE 41)",
+      "target_domain": "3T cardiac MRI (17 subjects: GE 12, Siemens 5)",
+      "task": "4-class cardiac segmentation (background, LV, MYO, RV)",
+      "shift_type": "cross-field-strength",
+      "prior_difficulty": "mild-moderate",
+      "prior_difficulty_detail": "1.5T->3T uses same bSSFP sequence but field strength affects SNR (higher at 3T), T1/T2 ratios, susceptibility artifacts (worse at 3T), and chemical shift. Literature reports 3T bSSFP has more banding artifacts and off-resonance effects. However, the fundamental contrast mechanism is preserved.",
+      "what_works": [
+        "BN recalibration (AdaBN) - effective for global intensity/contrast shift",
+        "Entropy minimization with careful LR - works when predictions are reasonable",
+        "Consistency regularization - invariance to augmentations transfers across field strengths",
+        "Histogram matching if intensity distributions differ significantly"
+      ],
+      "what_fails": [
+        "Aggressive fine-tuning - can overfit to small 3T target (only 17 subjects, 325 slices)",
+        "Ignoring the shift entirely may be suboptimal if 3T artifacts cause failures"
+      ],
+      "recommended_strategy": "conservative_adaptation",
+      "recommended_plan_adjustments": {
+        "adaptation_mode": "conservative",
+        "trainable_scope": "bn_only or bn+output",
+        "learning_rate": "1e-4 to 3e-4",
+        "num_steps": "50-100",
+        "max_iterations": 2,
+        "note": "Small target set (325 slices) means risk of overfitting. Start with BN recalibration, add entropy+consistency only if needed."
+      },
+      "physics_of_shift": {
+        "modality": "MRI",
+        "sequence": "bSSFP (balanced steady-state free precession)",
+        "source_field": "1.5T",
+        "target_field": "3T",
+        "mechanism": "Higher B0 increases SNR (~linear with field) but also increases susceptibility artifacts, chemical shift, and SAR. bSSFP at 3T has more off-resonance banding artifacts. T1 relaxation times increase ~20-40% at 3T while T2 stays similar, changing T2/T1 contrast ratio.",
+        "expected_intensity_shift": "moderate - higher SNR at 3T, different T2/T1 ratio affects myocardium-blood contrast",
+        "expected_texture_shift": "mild-moderate - more banding artifacts at 3T, different noise texture",
+        "expected_structural_shift": "none - same cardiac anatomy"
+      },
+      "standardization_gap": "mild-moderate",
+      "standardization_gap_detail": "Same bSSFP sequence but different field strength. 3T has higher SNR but more artifacts. Intensity normalization during preprocessing reduces but does not eliminate the gap.",
+      "contrast_mechanism": "same_modified",
+      "contrast_mechanism_detail": "Both bSSFP but T2/T1 weighting ratio changes with field strength. Blood remains bright, myocardium intermediate, but relative contrast may shift.",
+      "dominant_shift": "Global intensity/SNR difference from field strength, plus increased susceptibility artifacts at 3T. Also vendor confound (3T is GE+Siemens only, while 1.5T includes Philips).",
+      "boundary_sharpness_change": "field_dependent",
+      "boundary_sharpness_detail": "3T may have sharper boundaries due to higher SNR, but banding artifacts near air-tissue interfaces can blur or distort boundaries.",
+      "appearance_reversals": []
+    },
+  "mmwhs_cross_modality": {
+    "dataset": "MMWHS 2017 (Multi-Modality Whole Heart Segmentation Challenge)",
+    "source_domain": "CT cardiac scans (20 subjects, contrast-enhanced CTA)",
+    "target_domain": "MRI cardiac scans (20 subjects, various sequences)",
+    "task": "4-class cardiac segmentation (MYO, LA, LV, RV)",
+    "shift_type": "cross-modality",
+    "prior_difficulty": "severe",
+    "prior_difficulty_detail": "CT->MR is a fundamental modality change. CT uses X-ray attenuation (Hounsfield units) while MRI uses proton relaxation (T1/T2 weighting). Tissue contrasts are fundamentally different: bone is bright in CT but dark in MRI, blood pool appearance depends on MR sequence. This is one of the most challenging domain shifts in medical imaging.",
+    "what_works": [
+      "Histogram matching / CDF-based intensity alignment - partially bridges the intensity gap",
+      "BN recalibration (AdaBN) - essential first step to align feature statistics",
+      "Consistency regularization - augmentation-invariance transfers across modalities",
+      "Structure-aware losses - cardiac anatomy priors help constrain hallucinations",
+      "Multi-iteration conservative adaptation - gradual refinement"
+    ],
+    "what_fails": [
+      "Entropy minimization alone - can reinforce modality-specific hallucinations",
+      "Aggressive fine-tuning - catastrophic forgetting on small target set",
+      "Standard self-training - pseudo-labels from CT model on MR are unreliable",
+      "Ignoring the shift - CT model produces near-zero results on MR"
+    ],
+    "recommended_strategy": "histogram_matching_then_conservative_adaptation",
+    "recommended_plan_adjustments": {
+      "preprocessing": "histogram_matching",
+      "adaptation_mode": "conservative",
+      "trainable_scope": "bn+output",
+      "learning_rate": "1e-4 to 3e-4",
+      "num_steps": "100-200",
+      "max_iterations": 3,
+      "loss_weights": {
+        "entropy": 0.0,
+        "consistency": 0.3,
+        "diversity": 0.3,
+        "bn_adapt": 0.5,
+        "anatomy": 0.2
+      },
+      "note": "Cross-modality is severe. Histogram matching as preprocessing, then conservative BN+output adaptation with consistency and diversity. Avoid entropy as it reinforces cross-modality hallucinations."
+    },
+    "physics_of_shift": {
+      "source_modality": "CT (computed tomography)",
+      "target_modality": "MRI (magnetic resonance imaging)",
+      "mechanism": "CT measures X-ray attenuation coefficients (electron density); MRI measures proton relaxation (T1, T2, proton density). Fundamentally different physical processes produce completely different intensity profiles for the same tissue.",
+      "expected_intensity_shift": "severe - completely different intensity distributions. CT: bone bright, air dark, soft tissue intermediate (HU scale). MRI: depends on sequence, bone always dark, fluid can be bright or dark.",
+      "expected_texture_shift": "severe - CT has sharp edges and uniform tissue appearance; MRI has more texture variation, susceptibility artifacts, and sequence-dependent contrast",
+      "expected_structural_shift": "none - same cardiac anatomy, though FOV and resolution may differ"
+    },
+    "standardization_gap": "severe",
+    "standardization_gap_detail": "CT and MRI use completely different imaging physics. No amount of standardization can fully bridge the gap. Intensity histograms have fundamentally different shapes.",
+    "contrast_mechanism": "fundamentally_different",
+    "contrast_mechanism_detail": "CT: X-ray attenuation (electron density). MRI: proton relaxation (T1/T2/PD). Blood pool, myocardium, and surrounding tissues have completely different relative intensities.",
+    "dominant_shift": "Complete modality change: different physics, different intensity profiles, different texture, different artifacts. Only anatomy is preserved.",
+    "boundary_sharpness_change": "modality_dependent",
+    "boundary_sharpness_detail": "CT typically has sharper boundaries due to higher spatial resolution. MRI boundaries vary by sequence and may have partial volume effects.",
+    "appearance_reversals": [
+      "Bone: bright in CT, dark in MRI",
+      "Blood pool: intermediate-bright in contrast CT, variable in MRI (bright in bSSFP, dark in some other sequences)",
+      "Lung/air: very dark in CT (negative HU), signal void in MRI"
+    ]
+  }
+}

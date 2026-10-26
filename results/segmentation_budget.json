@@ -1,0 +1,459 @@
+{
+  "source": {
+    "prostate_RUNMC_to_HK": 0.7924,
+    "riga_BinRushed_to_Magrabia": 0.7436,
+    "chaos_CT_to_MRI_T2SPIR": 0.0887,
+    "amos_CT_to_MRI_multiorgan": 0.7228,
+    "brats_T1_to_FLAIR_tumor": 0.449,
+    "mmwhs_CT_whole_heart": 0.0394,
+    "fundus_REFUGE": 0.0,
+    "fundus_roi_REFUGE": 0.3828,
+    "mnms_Siemens_to_GE": 0.7729,
+    "mnms_field_1.5T_to_3T": 0.8424
+  },
+  "conditions": {
+    "direct": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7436,
+      "chaos_CT_to_MRI_T2SPIR": 0.0887,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.449,
+      "mmwhs_CT_whole_heart": 0.0394,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.3828,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "fixed_bn_reset_k0": {
+      "prostate_RUNMC_to_HK": 0.6351,
+      "riga_BinRushed_to_Magrabia": 0.483,
+      "chaos_CT_to_MRI_T2SPIR": 0.385,
+      "amos_CT_to_MRI_multiorgan": 0.5392,
+      "brats_T1_to_FLAIR_tumor": 0.4039,
+      "mmwhs_CT_whole_heart": 0.0515,
+      "fundus_REFUGE": 0.0001,
+      "fundus_roi_REFUGE": 0.5204,
+      "mnms_Siemens_to_GE": 0.5491,
+      "mnms_field_1.5T_to_3T": 0.8216
+    },
+    "fixed_tent_k0": {
+      "prostate_RUNMC_to_HK": 0.7914,
+      "riga_BinRushed_to_Magrabia": 0.7963,
+      "chaos_CT_to_MRI_T2SPIR": 0.2369,
+      "amos_CT_to_MRI_multiorgan": 0.3242,
+      "brats_T1_to_FLAIR_tumor": 0.1309,
+      "mmwhs_CT_whole_heart": 0.0,
+      "fundus_REFUGE": 0.0003,
+      "fundus_roi_REFUGE": 0.707,
+      "mnms_Siemens_to_GE": 0.7456,
+      "mnms_field_1.5T_to_3T": 0.8352
+    },
+    "fixed_sar_k0": {
+      "prostate_RUNMC_to_HK": 0.7552,
+      "riga_BinRushed_to_Magrabia": 0.0,
+      "chaos_CT_to_MRI_T2SPIR": 0.2244,
+      "amos_CT_to_MRI_multiorgan": 0.4898,
+      "brats_T1_to_FLAIR_tumor": 0.0,
+      "mmwhs_CT_whole_heart": 0.1127,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.0,
+      "mnms_Siemens_to_GE": 0.506,
+      "mnms_field_1.5T_to_3T": 0.6914
+    },
+    "fixed_eata_k0": {
+      "prostate_RUNMC_to_HK": 0.7565,
+      "riga_BinRushed_to_Magrabia": 0.0,
+      "chaos_CT_to_MRI_T2SPIR": 0.2226,
+      "amos_CT_to_MRI_multiorgan": 0.4903,
+      "brats_T1_to_FLAIR_tumor": 0.0,
+      "mmwhs_CT_whole_heart": 0.111,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.0,
+      "mnms_Siemens_to_GE": 0.4972,
+      "mnms_field_1.5T_to_3T": 0.6876
+    },
+    "medadapt_k0": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7963,
+      "chaos_CT_to_MRI_T2SPIR": 0.0887,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.449,
+      "mmwhs_CT_whole_heart": 0.0394,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.5204,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "medadapt_k1": {
+      "prostate_RUNMC_to_HK": 0.7914,
+      "riga_BinRushed_to_Magrabia": 0.7436,
+      "chaos_CT_to_MRI_T2SPIR": 0.0887,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.4491,
+      "mmwhs_CT_whole_heart": 0.0394,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.7069,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "medadapt_k5": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7854,
+      "chaos_CT_to_MRI_T2SPIR": 0.385,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.7796,
+      "mmwhs_CT_whole_heart": 0.508,
+      "fundus_REFUGE": 0.658,
+      "fundus_roi_REFUGE": 0.6851,
+      "mnms_Siemens_to_GE": 0.7822,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "medadapt_k20": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.8381,
+      "chaos_CT_to_MRI_T2SPIR": 0.6621,
+      "amos_CT_to_MRI_multiorgan": 0.9284,
+      "brats_T1_to_FLAIR_tumor": 0.871,
+      "mmwhs_CT_whole_heart": 0.6329,
+      "fundus_REFUGE": 0.6574,
+      "fundus_roi_REFUGE": 0.7146,
+      "mnms_Siemens_to_GE": 0.8015,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "fixed_head_k1": {
+      "prostate_RUNMC_to_HK": 0.7946,
+      "riga_BinRushed_to_Magrabia": 0.7343,
+      "chaos_CT_to_MRI_T2SPIR": 0.0847,
+      "amos_CT_to_MRI_multiorgan": 0.6984,
+      "brats_T1_to_FLAIR_tumor": 0.4482,
+      "mmwhs_CT_whole_heart": 0.0151,
+      "fundus_REFUGE": 0.0002,
+      "fundus_roi_REFUGE": 0.4442,
+      "mnms_Siemens_to_GE": 0.8122,
+      "mnms_field_1.5T_to_3T": 0.8265
+    },
+    "fixed_partial_k1": {
+      "prostate_RUNMC_to_HK": 0.7293,
+      "riga_BinRushed_to_Magrabia": 0.7848,
+      "chaos_CT_to_MRI_T2SPIR": 0.0733,
+      "amos_CT_to_MRI_multiorgan": 0.4106,
+      "brats_T1_to_FLAIR_tumor": 0.2297,
+      "mmwhs_CT_whole_heart": 0.0028,
+      "fundus_REFUGE": 0.56,
+      "fundus_roi_REFUGE": 0.6229,
+      "mnms_Siemens_to_GE": 0.6875,
+      "mnms_field_1.5T_to_3T": 0.4676
+    },
+    "fixed_head_k5": {
+      "prostate_RUNMC_to_HK": 0.7935,
+      "riga_BinRushed_to_Magrabia": 0.7425,
+      "chaos_CT_to_MRI_T2SPIR": 0.089,
+      "amos_CT_to_MRI_multiorgan": 0.7349,
+      "brats_T1_to_FLAIR_tumor": 0.4481,
+      "mmwhs_CT_whole_heart": 0.0512,
+      "fundus_REFUGE": 0.0001,
+      "fundus_roi_REFUGE": 0.4304,
+      "mnms_Siemens_to_GE": 0.7894,
+      "mnms_field_1.5T_to_3T": 0.8421
+    },
+    "fixed_partial_k5": {
+      "prostate_RUNMC_to_HK": 0.7931,
+      "riga_BinRushed_to_Magrabia": 0.781,
+      "chaos_CT_to_MRI_T2SPIR": 0.6038,
+      "amos_CT_to_MRI_multiorgan": 0.8923,
+      "brats_T1_to_FLAIR_tumor": 0.8263,
+      "mmwhs_CT_whole_heart": 0.469,
+      "fundus_REFUGE": 0.6504,
+      "fundus_roi_REFUGE": 0.7091,
+      "mnms_Siemens_to_GE": 0.8072,
+      "mnms_field_1.5T_to_3T": 0.8358
+    },
+    "fixed_head_k20": {
+      "prostate_RUNMC_to_HK": 0.7922,
+      "riga_BinRushed_to_Magrabia": 0.7435,
+      "chaos_CT_to_MRI_T2SPIR": 0.0886,
+      "amos_CT_to_MRI_multiorgan": 0.7359,
+      "brats_T1_to_FLAIR_tumor": 0.4483,
+      "mmwhs_CT_whole_heart": 0.054,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.4256,
+      "mnms_Siemens_to_GE": 0.7786,
+      "mnms_field_1.5T_to_3T": 0.8431
+    },
+    "fixed_partial_k20": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7436,
+      "chaos_CT_to_MRI_T2SPIR": 0.5083,
+      "amos_CT_to_MRI_multiorgan": 0.9208,
+      "brats_T1_to_FLAIR_tumor": 0.8744,
+      "mmwhs_CT_whole_heart": 0.5014,
+      "fundus_REFUGE": 0.3249,
+      "fundus_roi_REFUGE": 0.6874,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8414
+    },
+    "medadapt_no_train_k5": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7436,
+      "chaos_CT_to_MRI_T2SPIR": 0.385,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.4491,
+      "mmwhs_CT_whole_heart": 0.0394,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.7069,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8424
+    },
+    "medadapt_no_train_k20": {
+      "prostate_RUNMC_to_HK": 0.7924,
+      "riga_BinRushed_to_Magrabia": 0.7436,
+      "chaos_CT_to_MRI_T2SPIR": 0.385,
+      "amos_CT_to_MRI_multiorgan": 0.7228,
+      "brats_T1_to_FLAIR_tumor": 0.4491,
+      "mmwhs_CT_whole_heart": 0.0394,
+      "fundus_REFUGE": 0.0,
+      "fundus_roi_REFUGE": 0.5204,
+      "mnms_Siemens_to_GE": 0.7729,
+      "mnms_field_1.5T_to_3T": 0.8424
+    }
+  },
+  "aggregates": {
+    "direct": {
+      "mean_dice": 0.4834,
+      "relative_gain_pct": 0.0,
+      "harmed": 0,
+      "improved": 0,
+      "unchanged": 10,
+      "worst_delta": 0.0
+    },
+    "fixed_bn_reset_k0": {
+      "mean_dice": 0.43889,
+      "relative_gain_pct": -9.208,
+      "harmed": 6,
+      "improved": 4,
+      "unchanged": 0,
+      "worst_delta": -0.2606
+    },
+    "fixed_tent_k0": {
+      "mean_dice": 0.45678,
+      "relative_gain_pct": -5.507,
+      "harmed": 6,
+      "improved": 4,
+      "unchanged": 0,
+      "worst_delta": -0.3986
+    },
+    "fixed_sar_k0": {
+      "mean_dice": 0.27795,
+      "relative_gain_pct": -42.501,
+      "harmed": 7,
+      "improved": 2,
+      "unchanged": 1,
+      "worst_delta": -0.7436
+    },
+    "fixed_eata_k0": {
+      "mean_dice": 0.27652,
+      "relative_gain_pct": -42.797,
+      "harmed": 7,
+      "improved": 2,
+      "unchanged": 1,
+      "worst_delta": -0.7436
+    },
+    "medadapt_k0": {
+      "mean_dice": 0.50243,
+      "relative_gain_pct": 3.937,
+      "harmed": 0,
+      "improved": 2,
+      "unchanged": 8,
+      "worst_delta": 0.0
+    },
+    "medadapt_k1": {
+      "mean_dice": 0.51572,
+      "relative_gain_pct": 6.686,
+      "harmed": 1,
+      "improved": 2,
+      "unchanged": 7,
+      "worst_delta": -0.001
+    },
+    "medadapt_k5": {
+      "mean_dice": 0.69409,
+      "relative_gain_pct": 43.585,
+      "harmed": 0,
+      "improved": 7,
+      "unchanged": 3,
+      "worst_delta": 0.0
+    },
+    "medadapt_k20": {
+      "mean_dice": 0.77408,
+      "relative_gain_pct": 60.132,
+      "harmed": 0,
+      "improved": 8,
+      "unchanged": 2,
+      "worst_delta": 0.0
+    },
+    "fixed_head_k1": {
+      "mean_dice": 0.48584,
+      "relative_gain_pct": 0.505,
+      "harmed": 6,
+      "improved": 4,
+      "unchanged": 0,
+      "worst_delta": -0.0244
+    },
+    "fixed_partial_k1": {
+      "mean_dice": 0.45685,
+      "relative_gain_pct": -5.492,
+      "harmed": 7,
+      "improved": 3,
+      "unchanged": 0,
+      "worst_delta": -0.3748
+    },
+    "fixed_head_k5": {
+      "mean_dice": 0.49212,
+      "relative_gain_pct": 1.804,
+      "harmed": 3,
+      "improved": 7,
+      "unchanged": 0,
+      "worst_delta": -0.0011
+    },
+    "fixed_partial_k5": {
+      "mean_dice": 0.7368,
+      "relative_gain_pct": 52.42,
+      "harmed": 1,
+      "improved": 9,
+      "unchanged": 0,
+      "worst_delta": -0.0066
+    },
+    "fixed_head_k20": {
+      "mean_dice": 0.49098,
+      "relative_gain_pct": 1.568,
+      "harmed": 4,
+      "improved": 5,
+      "unchanged": 1,
+      "worst_delta": -0.0007
+    },
+    "fixed_partial_k20": {
+      "mean_dice": 0.69675,
+      "relative_gain_pct": 44.135,
+      "harmed": 1,
+      "improved": 6,
+      "unchanged": 3,
+      "worst_delta": -0.001
+    },
+    "medadapt_no_train_k5": {
+      "mean_dice": 0.54545,
+      "relative_gain_pct": 12.836,
+      "harmed": 0,
+      "improved": 3,
+      "unchanged": 7,
+      "worst_delta": 0.0
+    },
+    "medadapt_no_train_k20": {
+      "mean_dice": 0.5268,
+      "relative_gain_pct": 8.978,
+      "harmed": 0,
+      "improved": 3,
+      "unchanged": 7,
+      "worst_delta": 0.0
+    }
+  },
+  "controlled_model_budget": {
+    "transfer": "prostate_RUNMC_to_HK",
+    "models": {
+      "U-Net": {
+        "0": {
+          "dice": 0.7924,
+          "selected_action": "source",
+          "decision": "escalate"
+        },
+        "1": {
+          "dice": 0.7914,
+          "selected_action": "tent",
+          "decision": "ship"
+        },
+        "5": {
+          "dice": 0.7924,
+          "selected_action": "source",
+          "decision": "keep_source"
+        },
+        "20": {
+          "dice": 0.7924,
+          "selected_action": "source",
+          "decision": "keep_source"
+        }
+      },
+      "SegFormer": {
+        "0": {
+          "dice": 0.5725,
+          "selected_action": "source",
+          "decision": "escalate"
+        },
+        "1": {
+          "dice": 0.5725,
+          "selected_action": "source",
+          "decision": "keep_source"
+        },
+        "5": {
+          "dice": 0.8431,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        },
+        "20": {
+          "dice": 0.8663,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        }
+      },
+      "nnU-Net": {
+        "0": {
+          "dice": 0.5436,
+          "source_dice": 0.5436,
+          "selected_action": "source",
+          "decision": "escalate"
+        },
+        "1": {
+          "dice": 0.5436,
+          "source_dice": 0.5436,
+          "selected_action": "source",
+          "decision": "keep_source"
+        },
+        "5": {
+          "dice": 0.7037,
+          "source_dice": 0.5436,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        },
+        "20": {
+          "dice": 0.8023,
+          "source_dice": 0.5436,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        }
+      },
+      "STU-Net": {
+        "0": {
+          "dice": 0.5093,
+          "source_dice": 0.5093,
+          "selected_action": "source",
+          "decision": "escalate"
+        },
+        "1": {
+          "dice": 0.693,
+          "source_dice": 0.5093,
+          "selected_action": "sar",
+          "decision": "ship"
+        },
+        "5": {
+          "dice": 0.7561,
+          "source_dice": 0.5093,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        },
+        "20": {
+          "dice": 0.843,
+          "source_dice": 0.5093,
+          "selected_action": "finetune_partial",
+          "decision": "ship"
+        }
+      }
+    }
+  }
+}

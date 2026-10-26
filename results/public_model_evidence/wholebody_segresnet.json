@@ -1,0 +1,221 @@
+{
+  "decision": "keep_source",
+  "selected_action": "source",
+  "source_hidden_test_dice": 0.951,
+  "delivered_hidden_test_dice": 0.951,
+  "source_hidden_test_per_case": [
+    {
+      "index": 2,
+      "dice": 0.9614
+    },
+    {
+      "index": 4,
+      "dice": 0.9397
+    },
+    {
+      "index": 8,
+      "dice": 0.9559
+    },
+    {
+      "index": 10,
+      "dice": 0.9425
+    },
+    {
+      "index": 14,
+      "dice": 0.9612
+    },
+    {
+      "index": 16,
+      "dice": 0.9558
+    },
+    {
+      "index": 20,
+      "dice": 0.9493
+    },
+    {
+      "index": 22,
+      "dice": 0.9403
+    },
+    {
+      "index": 26,
+      "dice": 0.9444
+    },
+    {
+      "index": 29,
+      "dice": 0.9591
+    }
+  ],
+  "delivered_hidden_test_per_case": [
+    {
+      "index": 2,
+      "dice": 0.9614
+    },
+    {
+      "index": 4,
+      "dice": 0.9397
+    },
+    {
+      "index": 8,
+      "dice": 0.9559
+    },
+    {
+      "index": 10,
+      "dice": 0.9425
+    },
+    {
+      "index": 14,
+      "dice": 0.9612
+    },
+    {
+      "index": 16,
+      "dice": 0.9558
+    },
+    {
+      "index": 20,
+      "dice": 0.9493
+    },
+    {
+      "index": 22,
+      "dice": 0.9403
+    },
+    {
+      "index": 26,
+      "dice": 0.9444
+    },
+    {
+      "index": 29,
+      "dice": 0.9591
+    }
+  ],
+  "calibration_holdout_dice": {
+    "source": 0.9467,
+    "histogram_match": 0.001,
+    "clahe": 0.0,
+    "finetune_head": 0.9467,
+    "finetune_partial": 0.6764,
+    "finetune_lora": 0.9393
+  },
+  "budget_spent": {
+    "compute_minutes": 17.0,
+    "n_trials": 2,
+    "llm_usd": 0.04,
+    "k_labels": 5
+  },
+  "steps": 10,
+  "runtime_seconds": 712.5,
+  "provenance": {
+    "model_id": "wholebody_segresnet",
+    "bundle": "wholeBody_ct_segmentation",
+    "bundle_version": "0.2.7",
+    "architecture": "SegResNet (105-class; spleen channel extracted)",
+    "official_url": "https://huggingface.co/MONAI/wholeBody_ct_segmentation",
+    "checkpoint_sha256": "80b429fb4b080df11c9ed0b0bdaa8a615ff083921bb213a512cf285afbc4e3fe",
+    "source_domain": "TotalSegmentator whole-body CT",
+    "target_domain": "MSD Task09 Spleen CT"
+  },
+  "split": {
+    "selection_rule": "K=5 uses five interleaved calibration cases from 15 evenly spaced cases; the other ten are fixed hidden test. K=20 appends non-test cases in index order. Every third calibration position is selection; the rest train.",
+    "k_labels": 5,
+    "calibration_indices": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "calibration_case_ids": [
+      "spleen_10.nii.gz",
+      "spleen_18.nii.gz",
+      "spleen_24.nii.gz",
+      "spleen_3.nii.gz",
+      "spleen_41.nii.gz"
+    ],
+    "calibration_train_indices": [
+      6,
+      12,
+      24
+    ],
+    "calibration_holdout_indices": [
+      0,
+      18
+    ],
+    "hidden_test_indices": [
+      2,
+      4,
+      8,
+      10,
+      14,
+      16,
+      20,
+      22,
+      26,
+      29
+    ],
+    "hidden_test_case_ids": [
+      "spleen_13.nii.gz",
+      "spleen_16.nii.gz",
+      "spleen_2.nii.gz",
+      "spleen_21.nii.gz",
+      "spleen_26.nii.gz",
+      "spleen_28.nii.gz",
+      "spleen_32.nii.gz",
+      "spleen_38.nii.gz",
+      "spleen_45.nii.gz",
+      "spleen_49.nii.gz"
+    ],
+    "hidden_test_labels_visible_to_controller": false
+  },
+  "reload_verification": {
+    "artifact": "eager_package",
+    "artifact_format": "python_eager_cloudpickle",
+    "verified": true,
+    "verification_set": "all 10 hidden-test cases",
+    "exact_matching_prediction_masks": 10,
+    "mean_hidden_test_dice": 0.951,
+    "max_absolute_case_dice_difference": 0.0
+  },
+  "standalone_verification": {
+    "verified": true,
+    "case_index": 2,
+    "case_id": "spleen_13.nii.gz",
+    "separate_process": true,
+    "api_credentials_removed": true,
+    "changed_voxels_vs_fresh_reload": 0,
+    "dice": 0.9614,
+    "expected_dice": 0.9614,
+    "mask_sha256": "ecf75934a236fd6e32998ef5cbeac286efe754ad7ba3468121aae086b9d91b06",
+    "mask_shape": [
+      253,
+      253,
+      128
+    ]
+  },
+  "source_record_sha256": "e640a72184ec491f193a18f32fa83d60231809cac3269fb1a5fafccdba2a0963",
+  "source_snapshot": {
+    "job_array": "2577637",
+    "python": "3.10.20",
+    "files": {
+      "harness/core.py": "99ed449fcd3e0d9130077ca0e1ee1928d7b7c5656aebbc73033190cac473c92d",
+      "harness/llm_policy.py": "22b8bc2203c6f9c6e233035a06a80bfb61f4c481625007c2b97f3603de3cf74e",
+      "harness/seg3d_delivery.py": "7baf92ceddc9e550aecb505b6ff46a589bef172f87af65b146964754b4a5a7cc",
+      "harness/seg3d_adapter.py": "2b4b6b0406b5a235a01937a4cab73bcd200c8fd7abec4f0f8d387dac0fa09578",
+      "medadaptagent/knowledge/llm_client.py": "ab82bc5a80da07cf2135739aae9de9f5a4ab492dae5dbbd01626059bc993e519",
+      "medadaptagent/tasks/segmentation_3d.py": "1956437562e635335319ec88b1713972b052608c803b78338b6c3a7edf6c3e43",
+      "scripts/run_public_model_repair.py": "c446e0d99f369df4a19572e832ddab90a9564c858c5d688b2482fc745c19adbf",
+      "scripts/public_repair_support.py": "2101287ba93c4812a0959dc7fdd1a7dc984e0dd7f454095d195b44ff63057a41",
+      "scripts/_source_loader.py": "ac56d4a427f66d602cbe5c6bc083076b488bd92470abf8de7622d01937b30de6"
+    }
+  },
+  "runtime_versions": {
+    "python": "3.10.20",
+    "packages": {
+      "torch": "2.12.0+cu130",
+      "monai": "1.5.2",
+      "numpy": "1.26.4",
+      "openai": "2.37.0",
+      "httpx": "0.28.1",
+      "cloudpickle": "3.1.2"
+    },
+    "cuda": "13.0"
+  }
+}

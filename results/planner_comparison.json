@@ -1,0 +1,20 @@
+{
+  "scripted_ladder": {
+    "n": 11,
+    "mean": 0.5961727272727273,
+    "mean_delta": 0.1639090909090909,
+    "improved": 9,
+    "tied": 2,
+    "harmed": 0,
+    "worst_delta": 0.0
+  },
+  "harness_v4_safe": {
+    "n": 11,
+    "mean": 0.6291,
+    "mean_delta": 0.19688181818181816,
+    "improved": 9,
+    "tied": 2,
+    "harmed": 0,
+    "worst_delta": 0.0
+  }
+}

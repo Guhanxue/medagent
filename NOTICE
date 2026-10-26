@@ -1,0 +1,14 @@
+MedAdaptAgent
+Copyright 2026 MedAdaptAgent contributors
+
+The original source code is licensed under the Apache License, Version 2.0.
+
+The bundled PneumoniaMNIST / MedMNIST+ demo samples are distributed under
+Creative Commons Attribution 4.0. See
+medadaptagent/demo/samples/ATTRIBUTION.md for the original authors, source,
+sample indices, and attribution. These samples are not relicensed as code.
+
+The paper PDF is authored by Hanxue Gu, Zhonghao Liu, Xingrui Gu, Kang Wang,
+and Yang Yang. The source-code license does not change the paper's copyright
+or publication terms. External datasets and model weights are not included;
+their respective licenses apply separately.
