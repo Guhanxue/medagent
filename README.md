@@ -8,8 +8,7 @@
 </p>
 
 <p align="center">
-  🎉 <strong>Accepted as a poster at GenAI4Health 2026, a NeurIPS 2026 workshop.</strong><br>
-  <a href="https://openreview.net/forum?id=umKmA679I6">View the paper on OpenReview</a>
+  🎉 <strong>Accepted as a poster at GenAI4Health 2026, a NeurIPS 2026 workshop.</strong>
 </p>
 
 <p align="center">
