@@ -8,6 +8,11 @@
 </p>
 
 <p align="center">
+  🎉 <strong>Accepted as a poster at GenAI4Health 2026, a NeurIPS 2026 workshop.</strong><br>
+  <a href="https://openreview.net/forum?id=umKmA679I6">View the paper on OpenReview</a>
+</p>
+
+<p align="center">
   <a href="paper/MedAdaptAgent_camera_ready.pdf">📄 Read the paper</a> &nbsp;·&nbsp;
   <a href="#-meet-the-tiny-lab">🌱 Try the demo</a> &nbsp;·&nbsp;
   <a href="docs/LOCAL_LLM.md">🏡 Use a local model</a> &nbsp;·&nbsp;
